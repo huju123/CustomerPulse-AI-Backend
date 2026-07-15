@@ -1,0 +1,39 @@
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# Environment variables (secrets)
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# FastAPI / Uvicorn
+*.log
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebooks (if you use any for testing)
+.ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+htmlcov/
+.coverage
+
+# ML model artifacts (large files — decide with your team)
+# Uncomment if models are large and you'll share them separately
+# ml_artifacts/*.pkl
+# ml_artifacts/*.joblib
