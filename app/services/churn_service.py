@@ -2,6 +2,7 @@ import joblib
 import pandas as pd
 from pathlib import Path
 from app.models.schemas import CustomerFeatures, ChurnPredictionResponse, RiskLevel
+from app.services import shap_service
 
 # ============================================================
 # Load model + encoder ONCE at startup (not per-request)
@@ -66,12 +67,13 @@ def predict_churn(customer: CustomerFeatures) -> ChurnPredictionResponse:
     churn_probability = float(_model.predict_proba(input_df)[0][1])
     risk_level = _risk_level_from_probability(churn_probability)
     confidence_score = round(max(churn_probability, 1 - churn_probability), 4)
+    top_factors = shap_service.get_top_factors_for_customer(input_df)
 
     return ChurnPredictionResponse(
         churn_probability=round(churn_probability, 4),
         risk_level=risk_level,
         confidence_score=confidence_score,
-        top_factors=[],  # filled in once shap_service.py is wired in (next step)
+        top_factors=top_factors,
         explanation_summary=(
             f"This customer has a {risk_level.value.lower()} risk of churn "
             f"based on their transaction history, spending, and recency of purchase."
