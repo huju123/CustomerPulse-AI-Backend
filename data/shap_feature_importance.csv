@@ -1,0 +1,7 @@
+Feature,Mean SHAP
+days_since_last_purchase,6.2195997
+customer_lifetime_days,0.52300906
+total_quantity,0.1756888
+total_transactions,0.120978855
+total_spend,0.021208478
+country,0.0010591001
