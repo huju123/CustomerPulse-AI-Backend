@@ -121,3 +121,29 @@ class FeatureImportanceResponse(BaseModel):
     model_name: str = Field(..., description="Which model this importance data comes from (e.g. XGBoost)")
     features: List[FeatureImportanceItem]
 
+
+# ============================================================
+# 5. GET /high-risk-customers
+# ============================================================
+
+class HighRiskCustomer(BaseModel):
+    """A single customer's churn risk, computed from the real trained model."""
+    customer_id: str
+    churn_probability: float = Field(..., ge=0, le=1)
+    risk_level: RiskLevel
+    total_spend: float = Field(..., ge=0)
+    days_since_last_purchase: int = Field(..., ge=0)
+
+
+class RiskSegment(BaseModel):
+    """Count and percentage of customers in a given risk band, across the FULL dataset."""
+    risk_level: RiskLevel
+    customer_count: int = Field(..., ge=0)
+    percentage: float = Field(..., ge=0, le=100)
+
+
+class HighRiskCustomersResponse(BaseModel):
+    """Response schema for the high-risk customer list + full-dataset risk segmentation."""
+    customers: List[HighRiskCustomer] = Field(..., description="Top N riskiest customers, sorted by churn probability descending")
+    risk_segmentation: List[RiskSegment] = Field(..., description="Risk band breakdown across ALL customers in the dataset")
+    total_customers_scored: int = Field(..., ge=0)
